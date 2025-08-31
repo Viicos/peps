@@ -143,6 +143,14 @@ It can appear only in a specific context:
 :ref:`inline typed dictionaries with the comprehension syntax <pep-9999-comprehension-syntax>`,
 described below.
 
+..
+  It is expressed as a type variable :ref:`bound <typing:typevar-bound>` to a key specification.
+  TODO expand on why this isn't true. It could be intuitively, but a type variable T
+  bound to a key specification (i.e. T: Literal['a', 'b', 'c']) can be parameterized
+  with Literal['a', 'b'], so this isn't a single key.
+  Also if bound to a bound KeyOf specification, we arrive in HKT territory, or at least
+  in a limited version of HKT that allows generic bounds.
+
 The ``ValueOf`` special form
 ----------------------------
 
@@ -156,13 +164,6 @@ view.
 (these are only carried by the key specification view, as described in the
 :ref:`comprehension syntax section <pep-9999-comprehension-syntax>` below).
 
-..
-  It is expressed as a type variable :ref:`bound <typing:typevar-bound>` to a key specification.
-  TODO expand on why this isn't true. It could be intuitively, but a type variable T
-  bound to a key specification (i.e. T: Literal['a', 'b', 'c']) can be parameterized
-  with Literal['a', 'b'], so this isn't a single key.
-  Also if bound to a bound KeyOf specification, we arrive in HKT territory, or at least
-  in a limited version of HKT that allows generic bounds.
 
 Inline type expressions declarations
 ------------------------------------
@@ -387,7 +388,7 @@ Here are some examples demonstrating these rules:
         * - Comprehension syntax
           - .. code-block:: python
 
-                type Pick[T: TypedDict, K: KeyOf[T]] = <{P: ValueOf[T, P] for P in KeyOf[T] - K}>
+                type Omit[T: TypedDict, K: KeyOf[T]] = <{P: ValueOf[T, P] for P in KeyOf[T] - K}>
         * - Class equivalent
           - Not expressible
 
